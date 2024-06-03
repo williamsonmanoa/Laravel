@@ -13,14 +13,12 @@ return new class extends Migration
     {
         Schema::create('etapes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('course_id');
             $table->string('nom');
             $table->integer('rang_etape');
             $table->decimal('longeur');
             $table->integer('nb_coureurs');
             $table->dateTime('date_heure_depart');
             $table->timestamps();
-            $table->foreign('course_id')->references('id')->on('courses');
         });
     }
 

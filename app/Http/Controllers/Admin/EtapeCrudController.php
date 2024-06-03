@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\EtapeRequest;
-use App\Models\Course;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -30,23 +29,6 @@ class EtapeCrudController extends CrudController
         CRUD::setModel(\App\Models\Etape::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/etape');
         CRUD::setEntityNameStrings('etape', 'etapes');
-        $this->crud->addField([
-            'label' => "Course",
-            'type' => 'select',
-            'name' => 'course_id',
-            'entity' => 'course',
-            'attribute' => 'name',
-            'model' => Course::class
-        ]);
-        CRUD::column([
-            'label' => "Course",
-            'type' => 'select',
-            'name' => 'course_id',
-            'entity' => 'course',
-            'attribute' => 'name',
-            'model' => Course::class
-        ]);
-
     }
 
     /**
