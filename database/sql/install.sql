@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : lun. 03 juin 2024 à 21:55
+-- Généré le : lun. 03 juin 2024 à 21:59
 -- Version du serveur : 8.0.36-2ubuntu3
 -- Version de PHP : 8.3.7
 
@@ -139,7 +139,7 @@ CREATE TABLE `courses` (
 --
 
 INSERT INTO `courses` (`id`, `name`, `created_at`, `updated_at`) VALUES
-(1, 'Cours 12 personnes', '2024-06-03 16:21:40', '2024-06-03 16:22:06');
+(1, 'Course 2024', '2024-06-03 16:21:40', '2024-06-03 18:59:07');
 
 -- --------------------------------------------------------
 
@@ -160,9 +160,9 @@ CREATE TABLE `equipes` (
 --
 
 INSERT INTO `equipes` (`id`, `user_id`, `nom`, `created_at`, `updated_at`) VALUES
-(1, NULL, 'A', '2024-06-03 17:11:41', '2024-06-03 17:11:41'),
-(2, 3, 'B', '2024-06-03 17:14:08', '2024-06-03 18:36:14'),
-(3, 4, 'C', '2024-06-03 17:14:11', '2024-06-03 18:36:20');
+(1, 5, 'A', '2024-06-03 17:11:41', '2024-06-03 18:58:49'),
+(2, 4, 'B', '2024-06-03 17:14:08', '2024-06-03 18:58:44'),
+(3, 3, 'C', '2024-06-03 17:14:11', '2024-06-03 18:58:38');
 
 -- --------------------------------------------------------
 
@@ -410,7 +410,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('Kkgu8HWzIZESbVSgka0otK2qh97SjO45vaCukiN9', NULL, '127.0.0.1', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:125.0) Gecko/20100101 Firefox/125.0', 'YTo3OntzOjY6Il90b2tlbiI7czo0MDoiaVhOOWVkMUcwRFJuZzJ5amw1Y213OUl6WW9tQWVkbWJxNG1TMllocCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9hZG1pbi9ldGFwZSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTU6ImxvZ2luX2JhY2twYWNrXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjIyOiJwYXNzd29yZF9oYXNoX2JhY2twYWNrIjtzOjYwOiIkMnkkMTIkYUY1Qy90N3ZYbUZiNUlFNVh6eUVCZS8uMndnMndjdy5kZVg3bUV2bVZXamprZlI2bHgydVMiO3M6NjoiY3JlYXRlIjthOjE6e3M6MTA6InNhdmVBY3Rpb24iO3M6MTM6InNhdmVfYW5kX2JhY2siO31zOjY6InVwZGF0ZSI7YToxOntzOjEwOiJzYXZlQWN0aW9uIjtzOjEzOiJzYXZlX2FuZF9iYWNrIjt9fQ==', 1717451403);
+('Kkgu8HWzIZESbVSgka0otK2qh97SjO45vaCukiN9', NULL, '127.0.0.1', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:125.0) Gecko/20100101 Firefox/125.0', 'YTo3OntzOjY6Il90b2tlbiI7czo0MDoiaVhOOWVkMUcwRFJuZzJ5amw1Y213OUl6WW9tQWVkbWJxNG1TMllocCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9hZG1pbi9ldGFwZSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTU6ImxvZ2luX2JhY2twYWNrXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjIyOiJwYXNzd29yZF9oYXNoX2JhY2twYWNrIjtzOjYwOiIkMnkkMTIkYUY1Qy90N3ZYbUZiNUlFNVh6eUVCZS8uMndnMndjdy5kZVg3bUV2bVZXamprZlI2bHgydVMiO3M6NjoiY3JlYXRlIjthOjE6e3M6MTA6InNhdmVBY3Rpb24iO3M6MTM6InNhdmVfYW5kX2JhY2siO31zOjY6InVwZGF0ZSI7YToxOntzOjEwOiJzYXZlQWN0aW9uIjtzOjEzOiJzYXZlX2FuZF9iYWNrIjt9fQ==', 1717451949);
 
 -- --------------------------------------------------------
 
@@ -435,9 +435,9 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'Admin', 'admin@gmail.com', '2024-06-03 13:08:38', '$2y$12$aF5C/t7vXmFb5IE5XzyEBe/.2wg2wcw.deX7mEvmVWjjkfR6lx2uS', '7T4ABFRy1m', '2024-06-03 13:08:38', '2024-06-03 16:13:10'),
-(3, 'Equipe', 'admmin-equipe@gmail.com', '2024-06-03 13:08:38', '$2y$12$ZaTST9psMC8N9Iqpvy9QmOH.ZhFUlgGG3itpeqJ13MegHt351/OxS', 'XQN2Bj1d1R', '2024-06-03 13:08:38', '2024-06-03 18:35:10'),
-(4, 'Equipe Admin Test', 'equipeadmin@gmail.com', NULL, '$2y$12$lUw7ZnKSxwLzRvEESYHj1uE4RcSomiD7CSd5BY5F/RC3XBwiE8Yi2', NULL, '2024-06-03 18:00:36', '2024-06-03 18:29:39'),
-(5, 'Equipe admin C', 'equipe-admin-c@gmail.com', NULL, '$2y$12$ZwzfJdXtgl7za3Q6kAWIouLpwrsjCJWu7.6yMyNFqPsV88lnQ81zi', NULL, '2024-06-03 18:40:15', '2024-06-03 18:40:15');
+(3, 'Equipe C', 'admmin-equipe@gmail.com', '2024-06-03 13:08:38', '$2y$12$ZaTST9psMC8N9Iqpvy9QmOH.ZhFUlgGG3itpeqJ13MegHt351/OxS', 'XQN2Bj1d1R', '2024-06-03 13:08:38', '2024-06-03 18:58:32'),
+(4, 'Equipe B', 'equipeadmin@gmail.com', NULL, '$2y$12$lUw7ZnKSxwLzRvEESYHj1uE4RcSomiD7CSd5BY5F/RC3XBwiE8Yi2', NULL, '2024-06-03 18:00:36', '2024-06-03 18:58:24'),
+(5, 'Equipe A', 'equipe-admin-c@gmail.com', NULL, '$2y$12$ZwzfJdXtgl7za3Q6kAWIouLpwrsjCJWu7.6yMyNFqPsV88lnQ81zi', NULL, '2024-06-03 18:40:15', '2024-06-03 18:58:18');
 
 --
 -- Index pour les tables déchargées
