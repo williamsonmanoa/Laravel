@@ -85,6 +85,8 @@ class EtapeCrudController extends CrudController
         $request->validate([
             'file' => 'required|mimes:csv',
         ]);
+
+        $iCountImported = 0;
         //read csv file and skip data
         $file = $request->file('file');
         $handle = fopen($file->path(), 'r');
@@ -112,7 +114,7 @@ class EtapeCrudController extends CrudController
                 return redirect(backpack_url('etape'));
             }
 
-            $etape = Etape::where('nom','=',$etapeCsv['etape'])->first();
+            $etape = Etape::where('rang_etape','=',$etapeCsv['rang'])->first();
 
             $dateDepart = new Carbon($etapeCsv['date-depart'] . ' ' . $etapeCsv['heure-depart']);
 
@@ -129,10 +131,12 @@ class EtapeCrudController extends CrudController
             }else{
                 $etape->update($dataEtape);
             }
+
+            $iCountImported++;
         }
         fclose($handle);
 
-        \Alert::add('success', 'Import des étapes réussi')->flash();
+        \Alert::add('success', 'Import des étapes réussi. ' . $iCountImported . ' ligne(s) importée(s)')->flash();
         return redirect(backpack_url('etape'));
     }
 }
