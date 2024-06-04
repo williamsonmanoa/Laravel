@@ -25,4 +25,5 @@ Route::group([
 
 
     Route::post('etape/import_csv', 'EtapeCrudController@import_csv');
+    Route::post('resultat/import_csv', 'ResultatCrudController@import_csv');
 }); // this should be the absolute last line of this file

@@ -96,11 +96,21 @@ class EtapeCrudController extends CrudController
             $item = Str::slug($item);
         }
 
-// Rows
         while($etapeCsv = fgetcsv($handle))
         {
             // This is a great trick, to get an associative row by combining the headrow with the content-rows.
             $etapeCsv = array_combine($head, $etapeCsv);
+
+            if(
+                !isset($resultatCsv['etape'])
+                || !isset($resultatCsv['longueur'])
+                || !isset($resultatCsv['rang'])
+                || !isset($resultatCsv['nb-coureur'])
+                || !isset($resultatCsv['date-depart'])
+            ){
+                \Alert::add('error', 'Fichier invalide')->flash();
+                return redirect(backpack_url('etape'));
+            }
 
             $etape = Etape::where('nom','=',$etapeCsv['etape'])->first();
 
@@ -122,35 +132,7 @@ class EtapeCrudController extends CrudController
         }
         fclose($handle);
 
-        return redirect(backpack_url('etape'))->with('success', 'Import du étapes réussi');
-    }
-
-    public function getchunkdata($chunkdata)
-    {
-        dd($chunkdata);
-        foreach($chunkdata as $column){
-            $firstname = $column[0];
-            $lastname = $column[1];
-            $email = $column[2];
-            $phoneNumber = $column[3];
-            $dateOfBirth = $column[4];
-            $gender = $column[5];
-            $address = $column[6];
-            $skill = json_encode([$column[7]]);
-            $sallary = $column[8];
-
-            //create new employee
-            $employee = new Employee();
-            $employee->first_name = $firstname;
-            $employee->last_name = $lastname;
-            $employee->email = $email;
-            $employee->phone = $phoneNumber;
-            $employee->date_of_birth = $dateOfBirth;
-            $employee->gender = $gender;
-            $employee->address = $address;
-            $employee->skills = $skill;
-            $employee->basic_salary = $sallary;
-            $employee->save();
-        }
+        \Alert::add('success', 'Import des étapes réussi')->flash();
+        return redirect(backpack_url('etape'));
     }
 }

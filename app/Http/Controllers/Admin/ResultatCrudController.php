@@ -8,6 +8,9 @@ use App\Models\Equipe;
 use App\Models\Etape;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 /**
  * Class ResultatCrudController
@@ -95,6 +98,8 @@ class ResultatCrudController extends CrudController
         if( $this->isEquipe() ){
             $this->crud->removeColumn('equipe_id');
         }
+
+        CRUD::addButtonFromView('top', 'import_csv', 'import_csv', 'end');
         /**
          * Columns can be defined using the fluent syntax:
          * - CRUD::column('price')->type('number');
@@ -188,5 +193,64 @@ class ResultatCrudController extends CrudController
         }
         // do something after save
         return $response;
+    }
+
+    public function import_csv(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:csv',
+        ]);
+        //read csv file and skip data
+        $file = $request->file('file');
+        $handle = fopen($file->path(), 'r');
+
+        //skip the header row
+        $head = fgetcsv($handle);
+
+        foreach ($head as &$item){
+            $item = Str::slug($item);
+        }
+
+// Rows
+        while($resultatCsv = fgetcsv($handle))
+        {
+            // This is a great trick, to get an associative row by combining the headrow with the content-rows.
+            $resultatCsv = array_combine($head, $resultatCsv);
+
+            if(
+                !isset($resultatCsv['etape-rang'])
+                || !isset($resultatCsv['numero-dossard'])
+                || !isset($resultatCsv['nom'])
+                || !isset($resultatCsv['date-naissance'])
+                || !isset($resultatCsv['equipe'])
+                || !isset($resultatCsv['arrivee'])
+            ){
+                \Alert::add('error', 'Fichier invalide')->flash();
+                return redirect(backpack_url('resultat'));
+            }
+            dd($resultatCsv);
+
+            $etape = Etape::where('nom','=',$resultatCsv['etape'])->first();
+
+            $dateDepart = new Carbon($resultatCsv['date-depart'] . ' ' . $resultatCsv['heure-depart']);
+
+            $dataEtape = [
+                'nom' => $resultatCsv['etape'],
+                'longeur' => (float)$resultatCsv['longueur'],
+                'rang_etape' => (int)$resultatCsv['rang'],
+                'nb_coureurs' => (int)$resultatCsv['nb-coureur'],
+                'date_heure_depart' => $dateDepart->format('Y-m-d H:i:s'),
+            ];
+
+            if(!$etape){
+                Etape::create($dataEtape);
+            }else{
+                $etape->update($dataEtape);
+            }
+        }
+        fclose($handle);
+
+        \Alert::add('success', 'Import des résultats réussi')->flash();
+        return redirect(backpack_url('etape'))->with('success');
     }
 }
