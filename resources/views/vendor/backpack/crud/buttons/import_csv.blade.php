@@ -1,4 +1,4 @@
-@if ($crud->hasAccess('create'))
+@if ($crud->hasAccess('create') && backpack_auth()->user()->hasRole('admin') )
     <div class="card">
         <form method="post" enctype="multipart/form-data" class="row g-3" action="{{url($crud->route.'/import_csv')}}">
             @csrf
