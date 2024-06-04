@@ -22,4 +22,7 @@ Route::group([
     Route::crud('equipe', 'EquipeCrudController');
     Route::crud('coureur', 'CoureurCrudController');
     Route::crud('resultat', 'ResultatCrudController');
+
+
+    Route::post('etape/import_csv', 'EtapeCrudController@import_csv');
 }); // this should be the absolute last line of this file

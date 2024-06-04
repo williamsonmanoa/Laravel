@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\EtapeRequest;
+use App\Models\Etape;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 /**
  * Class EtapeCrudController
@@ -40,7 +44,8 @@ class EtapeCrudController extends CrudController
     protected function setupListOperation()
     {
         CRUD::setFromDb(); // set columns from db columns.
-
+        //CRUD::addButtonFromView('line', 'import_csv', 'moderate', 'beginning');
+        CRUD::addButtonFromView('top', 'import_csv', 'import_csv', 'end');
         /**
          * Columns can be defined using the fluent syntax:
          * - CRUD::column('price')->type('number');
@@ -73,5 +78,79 @@ class EtapeCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    public function import_csv(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:csv',
+        ]);
+        //read csv file and skip data
+        $file = $request->file('file');
+        $handle = fopen($file->path(), 'r');
+
+        //skip the header row
+        $head = fgetcsv($handle);
+
+        foreach ($head as &$item){
+            $item = Str::slug($item);
+        }
+
+// Rows
+        while($etapeCsv = fgetcsv($handle))
+        {
+            // This is a great trick, to get an associative row by combining the headrow with the content-rows.
+            $etapeCsv = array_combine($head, $etapeCsv);
+
+            $etape = Etape::where('nom','=',$etapeCsv['etape'])->first();
+
+            $dateDepart = new Carbon($etapeCsv['date-depart'] . ' ' . $etapeCsv['heure-depart']);
+
+            $dataEtape = [
+                'nom' => $etapeCsv['etape'],
+                'longeur' => (float)$etapeCsv['longueur'],
+                'rang_etape' => (int)$etapeCsv['rang'],
+                'nb_coureurs' => (int)$etapeCsv['nb-coureur'],
+                'date_heure_depart' => $dateDepart->format('Y-m-d H:i:s'),
+            ];
+
+            if(!$etape){
+                Etape::create($dataEtape);
+            }else{
+                $etape->update($dataEtape);
+            }
+        }
+        fclose($handle);
+
+        return redirect(backpack_url('etape'))->with('success', 'Import du étapes réussi');
+    }
+
+    public function getchunkdata($chunkdata)
+    {
+        dd($chunkdata);
+        foreach($chunkdata as $column){
+            $firstname = $column[0];
+            $lastname = $column[1];
+            $email = $column[2];
+            $phoneNumber = $column[3];
+            $dateOfBirth = $column[4];
+            $gender = $column[5];
+            $address = $column[6];
+            $skill = json_encode([$column[7]]);
+            $sallary = $column[8];
+
+            //create new employee
+            $employee = new Employee();
+            $employee->first_name = $firstname;
+            $employee->last_name = $lastname;
+            $employee->email = $email;
+            $employee->phone = $phoneNumber;
+            $employee->date_of_birth = $dateOfBirth;
+            $employee->gender = $gender;
+            $employee->address = $address;
+            $employee->skills = $skill;
+            $employee->basic_salary = $sallary;
+            $employee->save();
+        }
     }
 }
