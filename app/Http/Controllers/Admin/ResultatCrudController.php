@@ -100,6 +100,7 @@ class ResultatCrudController extends CrudController
 
         if( $this->isEquipe() ){
             $this->crud->removeColumn('equipe_id');
+            CRUD::addClause('where', 'equipe_id', '=', $this->getEquipe()->id);
         }
 
         //$this->crud->setColumnDetails('date_heure_arrivee', ['format' => 'l j F Y H:i:s']);
@@ -123,6 +124,11 @@ class ResultatCrudController extends CrudController
             // 'name' => 'required|min:2',
         ]);
         CRUD::setFromDb(); // set fields from db columns.
+//        $this->crud->field([
+//            'name' => 'date_heure_arrivee',
+//            'label' => 'Date heure d\'arrivée',
+//            'type' => 'text'
+//        ]);
 
         if( $this->isEquipe() ){
             $this->crud->removeField('equipe_id');

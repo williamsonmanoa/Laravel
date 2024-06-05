@@ -9,6 +9,7 @@
     <x-backpack::menu-item title="Categories" icon="la la-question" :link="backpack_url('category')" />
     <x-backpack::menu-item title="Coureurs" icon="la la-question" :link="backpack_url('coureur')" />
     <x-backpack::menu-item title="Resultats" icon="la la-question" :link="backpack_url('resultat')" />
+    <x-backpack::menu-item title="Points" icon="la la-question" :link="backpack_url('point')" />
 @else
     <x-backpack::menu-item title="Resultats" icon="la la-question" :link="backpack_url('resultat')" />
 @endif
