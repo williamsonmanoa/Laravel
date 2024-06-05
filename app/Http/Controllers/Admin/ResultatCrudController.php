@@ -73,6 +73,7 @@ class ResultatCrudController extends CrudController
                 'model' => Etape::class
             ]
         ];
+
         if( !$this->isEquipe() ){
             $listFields[] = [
                 'label' => "Equipe",
@@ -103,6 +104,24 @@ class ResultatCrudController extends CrudController
             CRUD::addClause('where', 'equipe_id', '=', $this->getEquipe()->id);
         }
 
+        $this->crud->addColumn([
+            'name'     => 'date_heure_depart',
+            'label'    => 'Date et heure de départ',
+            'type'     => 'closure',
+            'function' => function($entry) {
+                return $entry->etape->date_heure_depart;
+            }
+        ])->beforeColumn('date_heure_arrivee');
+
+        $this->crud->addColumn([
+            'name'     => 'duree',
+            'label'    => 'Durée (hh:mm:ss)',
+            'type'     => 'closure',
+            'function' => function($entry) {
+                return (new Carbon($entry->etape->date_heure_depart))->diff(new Carbon($entry->date_heure_arrivee))->format('%Dj %H:%I:%S');
+            }
+        ])->afterColumn('date_heure_arrivee');
+
         //$this->crud->setColumnDetails('date_heure_arrivee', ['format' => 'l j F Y H:i:s']);
 
         CRUD::addButtonFromView('top', 'import_csv', 'import_csv', 'end');
@@ -124,12 +143,6 @@ class ResultatCrudController extends CrudController
             // 'name' => 'required|min:2',
         ]);
         CRUD::setFromDb(); // set fields from db columns.
-//        $this->crud->field([
-//            'name' => 'date_heure_arrivee',
-//            'label' => 'Date heure d\'arrivée',
-//            'type' => 'text'
-//        ]);
-
         if( $this->isEquipe() ){
             $this->crud->removeField('equipe_id');
         }
