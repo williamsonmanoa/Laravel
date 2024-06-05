@@ -104,11 +104,11 @@ class EtapeCrudController extends CrudController
             $etapeCsv = array_combine($head, $etapeCsv);
 
             if(
-                !isset($resultatCsv['etape'])
-                || !isset($resultatCsv['longueur'])
-                || !isset($resultatCsv['rang'])
-                || !isset($resultatCsv['nb-coureur'])
-                || !isset($resultatCsv['date-depart'])
+                !isset($etapeCsv['etape'])
+                || !isset($etapeCsv['longueur'])
+                || !isset($etapeCsv['rang'])
+                || !isset($etapeCsv['nb-coureur'])
+                || !isset($etapeCsv['date-depart'])
             ){
                 \Alert::add('error', 'Fichier invalide')->flash();
                 return redirect(backpack_url('etape'));
@@ -116,7 +116,8 @@ class EtapeCrudController extends CrudController
 
             $etape = Etape::where('rang_etape','=',$etapeCsv['rang'])->first();
 
-            $dateDepart = new Carbon($etapeCsv['date-depart'] . ' ' . $etapeCsv['heure-depart']);
+            //$dateDepart = new Carbon($etapeCsv['date-depart'] . ' ' . $etapeCsv['heure-depart']);
+            $dateDepart = Carbon::createFromFormat('d/m/Y H:i:s', $etapeCsv['date-depart'] . ' ' . $etapeCsv['heure-depart']);
 
             $dataEtape = [
                 'nom' => $etapeCsv['etape'],
